@@ -1,11 +1,15 @@
 from aiogram import Bot, Dispatcher, Router, types, F
-from keyboards.test_keyboards import *
-from bot import BOT_TOKEN
-import asyncio
+from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+
+
+from keyboards.test_keyboards import *
+from bot import BOT_TOKEN
 from handlers.test_processing import user_answer_processing
-from aiogram.types import ReplyKeyboardRemove
+
+
+import asyncio
 
 
 router = Router()
@@ -27,7 +31,7 @@ questions = [
 ]
 
 
-@router.message(F.text=="Пройти тест по самоопределению")
+@router.message(Command("test"))
 async def if_start_test(message: types.Message):
     await message.answer(
         'Начать прохождение теста по самоопределению?',
@@ -37,13 +41,9 @@ async def if_start_test(message: types.Message):
 
 @router.callback_query(F.data == 'yes')
 async def process_callback_button(callback_query: types.CallbackQuery):
-
-
-    reply_markup = ReplyKeyboardRemove()
-
-    
     if callback_query.from_user.id in user_answers:
         del user_answers[callback_query.from_user.id]
+
     await bot.edit_message_text(
         chat_id=callback_query.message.chat.id,
         message_id=callback_query.message.message_id,
@@ -67,6 +67,14 @@ async def process_callback_button(callback_query: types.CallbackQuery, state: FS
     if user_id not in user_answers:
         user_answers[user_id] = ''
 
+
+    await bot.edit_message_reply_markup(
+        chat_id=callback_query.message.chat.id,
+        message_id=callback_query.message.message_id,
+        reply_markup=None
+    )
+
+
     # Получаем текущий вопрос
     data = await state.get_data()
     current_question = data.get("current_question", 0)
@@ -82,9 +90,8 @@ async def process_callback_button(callback_query: types.CallbackQuery, state: FS
     # Если вопросы закончились, выводим сообщение с результатом
     if next_question >= len(questions):
         a, b, c, d, e, f = user_answer_processing(user_answers[user_id])
-        await bot.edit_message_text(
+        await bot.send_message(
             chat_id=callback_query.message.chat.id,
-            message_id=callback_query.message.message_id,
             text=f"Три самые популярные категории: {a}, {b}, {c}\nТри категории, к которым стоит присмотреться: {d}, {e}, {f}"
         )
         await state.clear()  # Завершаем состояние
