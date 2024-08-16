@@ -3,6 +3,9 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 
+from db.data import answers 
+
+
 def get_if_start_test_keyboard():
     buttons = [
         [
@@ -14,44 +17,16 @@ def get_if_start_test_keyboard():
     return keyboard
 
 
-ans = [
-    ['труд', 'умственный труд', 'бег', 'прыжки', 'скалолазание', 'комп', 'телефон', 'планшет', 'игры', 'учёба'],
-    ['труд', 'умственный труд', 'бег', 'прыжки', 'скалолазание', 'комп', 'телефон', 'планшет', 'игры', 'учёба'],
-    ['труд', 'умственный труд', 'бег', 'прыжки', 'скалолазание', 'комп', 'телефон', 'планшет', 'игры', 'учёба'],
-    ['труд', 'умственный труд', 'бег', 'прыжки', 'скалолазание', 'комп', 'телефон', 'планшет', 'игры', 'учёба'],
-    ['труд', 'умственный труд', 'бег', 'прыжки', 'скалолазание', 'комп', 'телефон', 'планшет', 'игры', 'учёба'],
-    ['труд', 'умственный труд', 'бег', 'прыжки', 'скалолазание', 'комп', 'телефон', 'планшет', 'игры', 'учёба'],
-    ['труд', 'умственный труд', 'бег', 'прыжки', 'скалолазание', 'комп', 'телефон', 'планшет', 'игры', 'учёба'],
-    ['труд', 'умственный труд', 'бег', 'прыжки', 'скалолазание', 'комп', 'телефон', 'планшет', 'игры', 'учёба'],
-    ['труд', 'умственный труд', 'бег', 'прыжки', 'скалолазание', 'комп', 'телефон', 'планшет', 'игры', 'учёба'],
-    ['труд', 'умственный труд', 'бег', 'прыжки', 'скалолазание', 'комп', 'телефон', 'планшет', 'игры', 'учёба']
-]
-
-
 def get_answers_for_question(i):
-    buttons = [
-        [
-            InlineKeyboardButton(text=ans[i][0], callback_data="0"),
-            InlineKeyboardButton(text=ans[i][1], callback_data="1")
-        ],
-        [
-            InlineKeyboardButton(text=ans[i][2], callback_data="2"),
-            InlineKeyboardButton(text=ans[i][3], callback_data="3")
-        ],
-        [
-            InlineKeyboardButton(text=ans[i][4], callback_data="4"),
-            InlineKeyboardButton(text=ans[i][5], callback_data="5")
-        ],
-        [
-            InlineKeyboardButton(text=ans[i][6], callback_data="6"),
-            InlineKeyboardButton(text=ans[i][7], callback_data="7")
-        ],
-        [
-            InlineKeyboardButton(text=ans[i][8], callback_data="8"),
-            InlineKeyboardButton(text=ans[i][9], callback_data="9")
-        ]
-    ]
+    buttons = []
 
-    
+    for x in range(0, len(answers[i]), 2):
+        buttons.append(
+            [
+            InlineKeyboardButton(text=answers[i][x], callback_data=str(x)),
+            InlineKeyboardButton(text=answers[i][x + 1], callback_data=str(x + 1))
+            ],
+        )
+
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard

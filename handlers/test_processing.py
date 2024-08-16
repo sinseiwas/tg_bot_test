@@ -1,5 +1,3 @@
-
-
 def user_answer_processing(user_answers):
     user_categories = {
         'труд': user_answers.count('0'),
@@ -14,13 +12,16 @@ def user_answer_processing(user_answers):
         'учёба': user_answers.count('9')
     }
 
-    sorted_categories = sorted(user_categories.items(), key=lambda x: x[1], reverse=True)
-    first_max_category = sorted_categories[0][0]
-    second_max_category = sorted_categories[1][0]
-    third_max_category = sorted_categories[2][0]
-    forth_max_category = sorted_categories[3][0]
-    fifth_max_category = sorted_categories[4][0]
-    sixth_max_category = sorted_categories[5][0]
+    # Сортируем категории по количеству ответов, оставляя только те, которые больше 0
+    sorted_categories = sorted(
+        [(category, count) for category, count in user_categories.items() if count > 0],
+        key=lambda x: x[1],
+        reverse=True
+    )
 
-    return first_max_category, second_max_category, third_max_category, forth_max_category, fifth_max_category, sixth_max_category
+    # Берем только существующие категории
+    most_popular_categories = [category for category, _ in sorted_categories[:3] if category != 0]
+    least_popular_categories = [category for category, _ in sorted_categories[3:6] if category != 0]
 
+    # Возвращаем только категории, которые существуют
+    return most_popular_categories, least_popular_categories
