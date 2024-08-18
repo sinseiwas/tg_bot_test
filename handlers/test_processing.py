@@ -1,4 +1,6 @@
-def user_answer_processing(user_answers):
+import asyncio
+
+async def user_answer_processing(user_answers):
     user_categories = {
         'труд': user_answers.count('0'),
         'умственный труд': user_answers.count('1'),

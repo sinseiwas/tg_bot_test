@@ -3,7 +3,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 
-from db.data import answers 
+from database.data import answers 
 
 
 def get_if_start_test_keyboard():

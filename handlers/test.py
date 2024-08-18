@@ -7,7 +7,7 @@ from aiogram.fsm.state import StatesGroup, State
 from keyboards.test_keyboards import *
 from bot import BOT_TOKEN
 from handlers.test_processing import user_answer_processing
-from db.data import questions
+from database.data import questions
 
 
 import asyncio
@@ -84,7 +84,7 @@ async def process_callback_button(callback_query: types.CallbackQuery, state: FS
         await delete_buttons(callback_query.message.chat.id, callback_query.message.message_id)
 
         #  Получаем категории
-        most_popular, least_popular = user_answer_processing(user_answers[user_id])
+        most_popular, least_popular = await user_answer_processing(user_answers[user_id])
 
         #  Формируем текст для вывода только если есть категории
         result_text = ""
@@ -104,7 +104,6 @@ async def process_callback_button(callback_query: types.CallbackQuery, state: FS
         await state.clear()
         del user_answers[user_id]
     else:
-        await asyncio.sleep(0.2)
 
         #  Удаляем предыдущие кнопки
         await delete_buttons(callback_query.message.chat.id, callback_query.message.message_id)
