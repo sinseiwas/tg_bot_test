@@ -5,13 +5,16 @@ from aiogram.fsm.state import StatesGroup, State
 
 
 from keyboards.test_keyboards import *
-from bot import BOT_TOKEN
 from handlers.test_processing import user_answer_processing
 from database.data import questions
 
 
+from dotenv import load_dotenv
+import os
 import asyncio
 
+load_dotenv()
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 router = Router()
 bot = Bot(token=BOT_TOKEN)
